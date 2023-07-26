@@ -1,5 +1,7 @@
 # REST APIs with Flask (Part 1)
 
+Video: https://youtu.be/x8kGkX6boFs
+
 ## Learning Goals
 - Review API Fundamentals
 - Discuss MVC Architecture and Reinforce Patterns / Best Practices
