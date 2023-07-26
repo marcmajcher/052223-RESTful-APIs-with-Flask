@@ -1,11 +1,10 @@
 
 from flask_sqlalchemy import SQLAlchemy
-# 6. ✅ Import `SerializerMixin` from `sqlalchemy_serializer`
+from sqlalchemy_serializer import SerializerMixin
 
 db = SQLAlchemy()
 
-# 7. ✅ Pass `SerializerMixin` to `Productions`
-class Production(db.Model):
+class Production(db.Model, SerializerMixin):
     __tablename__ = 'productions'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -21,13 +20,12 @@ class Production(db.Model):
 
     crew_members = db.relationship('CrewMember', backref='production')
 
-    # 7.1 ✅ Create a serialize rule that will help add our `crew_members` to the response.
+    serialize_rules = ('-crew_members.production',)
 
     def __repr__(self):
         return f'<Production Title:{self.title}, Genre:{self.genre}, Budget:{self.budget}, Image:{self.image}, Director:{self.director},ongoing:{self.ongoing}>'
 
-# 8. ✅ Pass `SerializerMixin` to `CrewMember`
-class CrewMember(db.Model):
+class CrewMember(db.Model, SerializerMixin):
     __tablename__ = 'crew_members'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -38,9 +36,7 @@ class CrewMember(db.Model):
 
     production_id = db.Column(db.Integer, db.ForeignKey('productions.id'))
     
-    # 8.1 ✅ Create a serialize rule that will help add our `production` to the response.
-      
+    serialize_rules = ('-production.crew_members',)    
+
     def __repr__(self):
         return f'<Production Name:{self.name}, Role:{self.role}'
-
- # 9. ✅ Navigate back to `app.py` for further steps.
